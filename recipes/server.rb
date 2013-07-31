@@ -17,57 +17,26 @@
 # limitations under the License.
 #
 
-packages = value_for_platform(
-  %w{ debian ubuntu } => {
-    :default => %w{ libboost-program-options1.40.0 libevent-1.4-2 libtokyocabinet8 }
-  },
-  %w{ centos redhat } => {
-    :default => []
-  }
+server_recipe = value_for_platform(
+    [ "centos", "redhat", "fedora" ] => {"default" => "server-rhel"},
+    "default" => "server-debian"
 )
 
-file_to_install = value_for_platform(
-  %w{ debian ubuntu } => { :default => 'gearmand-0.29_x86_64.deb' },
-  %w{ centos redhat } => { :default => 'gearmand-0.24_x86_64.rpm' }
+tools_packages = value_for_platform(
+    [ "centos", "redhat", "fedora" ] => {"default" => ""},
+    "default" => "mod-gearman-tools"
 )
 
-install_command = value_for_platform(
-  %w{ debian ubuntu } => { :default => 'dpkg -i' },
-  %w{ centos redhat } => { :default => 'rpm -Uvh' }
-)
+include_recipe "gearman::#{server_recipe}"
 
-remote_file "#{Chef::Config[:file_cache_path]}/#{file_to_install}" do
-  source "https://github.com/cramerdev/packages/raw/master/#{file_to_install}"
-  action :create_if_missing
+package tools_packages do
+  action :install
+  only_if node['gearman']['server']['user'].equal?(1)
 end
 
-package 'libgearman-dev gearman-job-server' do
-  action :remove
-end
-
-packages.each do |pkg|
-  package pkg
-end
-
-execute "#{install_command} #{Chef::Config[:file_cache_path]}/#{file_to_install}" do
-  creates '/usr/sbin/gearmand'
-end
-
-user node['gearman']['server']['user'] do
-  comment 'Gearman Job Server'
-  home node['gearman']['server']['data_dir']
-  shell '/bin/false'
-  supports :manage_home => true
-end
-
-group node['gearman']['server']['group'] do
-  members [node['gearman']['server']['user']]
-end
-
-directory node['gearman']['server']['log_dir'] do
-  owner node['gearman']['server']['user']
-  group node['gearman']['server']['group']
-  mode '0775'
+package "gearman-tools" do
+  action :install
+  only_if node['gearman']['server']['user'].equal?(1)
 end
 
 logrotate_app 'gearmand' do
@@ -75,31 +44,4 @@ logrotate_app 'gearmand' do
   frequency 'daily'
   rotate 4
   create "600 #{node['gearman']['server']['user']} #{node['gearman']['server']['group']}"
-end
-
-args = "--port=#{node['gearman']['server']['port']} --log-file #{node['gearman']['server']['log_dir']}/gearmand.log --verbose=#{node['gearman']['server']['log_level']}"
-
-case node['platform']
-when 'debian', 'ubuntu'
-  template '/etc/init/gearmand.conf' do source 'gearmand.upstart.erb'
-    owner 'root'
-    group 'root'
-    mode '0644'
-    variables :args => args
-    notifies :restart, 'service[gearmand]'
-  end
-
-  service 'gearmand' do
-    provider Chef::Provider::Service::Upstart
-    supports :restart => true, :status => true
-    action [:enable, :start]
-  end
-when 'centos', 'redhat'
-  include_recipe 'supervisor'
-  supervisor_service 'gearmand' do
-    start_command "/usr/sbin/gearmand #{args}"
-    variables :user => node['gearman']['server']['user']
-    supports :restart => true
-    action [:enable, :start]
-  end
 end

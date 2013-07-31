@@ -9,6 +9,6 @@ recipe           "gearman::server", "Install the Gearman job server"
 depends          "logrotate"
 depends          "supervisor"
 
-%w{ ubuntu redhat }.each do |os|
+%w{ debian ubuntu redhat centos }.each do |os|
   supports os
 end
