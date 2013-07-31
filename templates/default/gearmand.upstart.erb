@@ -5,7 +5,7 @@ description "Gearman job server"
 start on (net-device-up and local-filesystems and runlevel [2345])
 stop on runlevel [016]
 
-exec start-stop-daemon --pidfile /var/run/gearmand.pid --start -c <%= node['gearman']['server']['user'] %> --exec /usr/sbin/gearmand -- <%= @args %>
+exec start-stop-daemon --pidfile /var/run/gearmand.pid --start -c <%= node['gearman']['server']['user'] %> --exec /usr/local/sbin/gearmand -- <%= @params %>
 
 respawn
 respawn limit 10 5

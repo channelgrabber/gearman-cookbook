@@ -17,10 +17,18 @@
 # limitations under the License.
 #
 
+default['gearman']['server']['source'] = true
+default['gearman']['server']['release'] = '1.2'
+default['gearman']['server']['version'] = '1.1.8'
+default['gearman']['server']['verbosity'] = 'ERROR'
+default['gearman']['server']['tmp'] = '/tmp'
 default['gearman']['server']['user'] = 'gearman'
 default['gearman']['server']['group'] = 'gearman'
 default['gearman']['server']['port'] = 4730
+default['gearman']['server']['tools'] = 1
 default['gearman']['server']['log_dir'] = '/var/log/gearmand'
 default['gearman']['server']['log_level'] = 'INFO'
 default['gearman']['server']['data_dir'] = '/var/lib/gearman'
+default['gearman']['server']['params'] = ''
 
+default['gearman']['php']['version'] = '0.8.3'
