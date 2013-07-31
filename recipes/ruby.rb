@@ -1,8 +1,9 @@
 #
+# Author::  Patrick Leckey (<pat.leckey@gmail.com>)
 # Cookbook Name:: gearman
-# Recipe:: default
+# Recipe:: ruby
 #
-# Copyright 2011-2012, Cramer Development
+# Copyright 2011-2012, Patrick Leckey
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,4 +18,4 @@
 # limitations under the License.
 #
 
-package 'libgearman-dev'
+gem_package 'gearman-ruby'
