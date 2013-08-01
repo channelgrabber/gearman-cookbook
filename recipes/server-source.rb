@@ -36,7 +36,7 @@ template '/etc/init/gearman-job-server.conf' do
   group 'root'
   mode 0755
   variables ({
-      :params => node['gearman']['server']['args']
+      :params => '--config-file /etc/default/gearman-job-server'
   })
 end
 
