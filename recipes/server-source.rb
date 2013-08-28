@@ -1,6 +1,6 @@
 packages = [ 
   "gcc", "autoconf", "bison", "flex", "libtool", "make", "libboost-all-dev", "libcurl4-openssl-dev", "curl",
-  "libevent-dev", "memcached", "uuid-dev", "libtokyocabinet-dev", "libtokyocabinet8", "gperf", "libcloog-ppl0"
+  "libevent-dev", "memcached", "uuid-dev", "libtokyocabinet-dev", "libtokyocabinet9", "gperf", "libcloog-ppl0"
 ]
 packages.each do |p|
   package p do
