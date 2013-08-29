@@ -29,13 +29,9 @@ php_pear_channel 'pecl.php.net' do
   action :update
 end
 
-execute "enable pear auto discover" do
-    command "pear config-set auto_discover 1"
-end
 # Install gearman pecl package
 php_pear "gearman" do
-  channel 'pecl.php.net'
-  version '1.1.2'
+  version node['gearman']['php']['version']
   action :install
   not_if "php --info | grep -qs 'gearman support => enabled'"
 end
