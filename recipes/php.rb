@@ -35,7 +35,7 @@ end
 # Install gearman pecl package
 php_pear "gearman" do
   channel 'pecl.php.net'
-  version 1.1.2
+  version '1.1.2'
   action :install
   not_if "php --info | grep -qs 'gearman support => enabled'"
 end
