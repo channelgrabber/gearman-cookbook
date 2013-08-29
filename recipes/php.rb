@@ -34,6 +34,7 @@ execute "enable pear auto discover" do
 end
 # Install gearman pecl package
 php_pear "gearman" do
+  channel 'pecl.php.net'
   version node['gearman']['php']['version']
   action :install
   not_if "php --info | grep -qs 'gearman support => enabled'"
