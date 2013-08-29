@@ -31,7 +31,7 @@ end
 
 # Install gearman pecl package
 php_pear "gearman" do
-  version '1.1.2'
+  version node['gearman']['php']['version']
   action :install
   not_if "php --info | grep -qs 'gearman support => enabled'"
 end
