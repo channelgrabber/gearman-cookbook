@@ -31,4 +31,4 @@ default['gearman']['server']['log_level'] = 'INFO'
 default['gearman']['server']['data_dir'] = '/var/lib/gearman'
 default['gearman']['server']['params'] = ''
 
-default['gearman']['php']['version'] = '0.8.3'
+default['gearman']['php']['version'] = '1.1.2'
