@@ -1,3 +1,14 @@
+puts node["platform_family"]
+puts node["platform_family"]
+puts node["platform_family"]
+puts node["platform_family"]
+puts node["platform_family"]
+puts node["platform_family"]
+puts node["platform_family"]
+puts node["platform_family"]
+puts node["platform_family"]
+puts node["platform_family"]
+puts node["platform_family"]
 case node["platform_family"]
 when "ubuntu"
     packages = [ 
