@@ -1,14 +1,3 @@
-puts node["platform"]
-puts node["platform"]
-puts node["platform"]
-puts node["platform"]
-puts node["platform"]
-puts node["platform"]
-puts node["platform"]
-puts node["platform"]
-puts node["platform"]
-puts node["platform"]
-puts node["platform"]
 case node["platform"]
 when "ubuntu"
     packages = [ 
