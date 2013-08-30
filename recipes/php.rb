@@ -42,10 +42,6 @@ config_dir = value_for_platform(
     "default" => "/etc/php5/conf.d"
 )
 
-unless File.directory?(config_dir)
-  FileUtils.mkdir_p(config_dir)
-end
-
 # Place the correct ini file into the PHP config folder
 template "#{config_dir}/gearman.ini" do
   source 'gearman.php-ini.erb'
