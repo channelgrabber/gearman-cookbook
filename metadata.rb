@@ -1,4 +1,5 @@
 maintainer       "Cramer Development"
+name             'gearman'
 maintainer_email "sysadmin@cramerdev.com"
 license          "Apache 2.0"
 description      "Installs/Configures gearman libraries and server"
