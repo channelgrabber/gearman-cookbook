@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-package "libgearman6"
+package "libgearman7"
 package "libgearman-dev"
 
 # Update the channels
