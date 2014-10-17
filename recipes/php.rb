@@ -37,10 +37,7 @@ php_pear "gearman" do
 end
 
 # decide on the apache config dir
-config_dir = value_for_platform(
-    [ "centos", "redhat", "fedora" ] => {"default" => "/etc/php/conf.d"},
-    "default" => "/etc/php5/conf.d"
-)
+config_dir = node['php']['ext_conf_dir']
 
 # Place the correct ini file into the PHP config folder
 template "#{config_dir}/gearman.ini" do
