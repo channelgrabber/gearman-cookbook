@@ -31,4 +31,13 @@ default['gearman']['server']['log_level'] = 'INFO'
 default['gearman']['server']['data_dir'] = '/var/lib/gearman'
 default['gearman']['server']['params'] = ''
 
+default['gearman']['repository'] = {
+    'uri' => 'http://ppa.launchpad.net/ondrej/pkg-gearman/ubuntu',
+    'deb_src' => truem
+    'distribution' => `lsb_release -cs`.strip,
+    'components' => ['main'],
+    'keyserver' => 'keyserver.ubuntu.com',
+    'key' => 'E5267A6C'
+}
+
 default['gearman']['php']['version'] = '1.1.2'

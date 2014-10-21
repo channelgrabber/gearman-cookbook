@@ -32,6 +32,7 @@ if node['gearman']['server']['source']
   include_recipe "gearman::server-source"
 else
   exec = "/usr/sbin/gearmand"
+  include_recipe "gearman::repository"
   [ "gearman-job-server", "libgearman-dev" ].each do |p|
     package p
   end
