@@ -47,7 +47,7 @@ template '/etc/init/gearman-job-server.conf' do
       :exec => exec,
       :params => '--config-file /etc/default/gearman-job-server'
   })
-  notifies :restart, "service[gearmand]", :delayed
+  notifies :restart, "service[gearman-job-server]", :delayed
 end
 
 template '/etc/default/gearman-job-server' do
@@ -58,11 +58,10 @@ template '/etc/default/gearman-job-server' do
   variables ({
       :params => node['gearman']['server']['args']
   })
-  notifies :restart, "service[gearmand]", :delayed
+  notifies :restart, "service[gearman-job-server]", :delayed
 end
 
-service 'gearmand' do
-  service_name 'gearman-job-server'
+service 'gearman-job-server' do
   provider Chef::Provider::Service::Upstart
   supports :restart => true, :status => true
   action [:enable, :start]
