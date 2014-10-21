@@ -18,9 +18,14 @@
 # limitations under the License.
 #
 
-node.default['gearman']['server']['args'] = "--port=#{node['gearman']['server']['port']} \
-  --verbose=#{node['gearman']['server']['verbosity']}#{node['gearman']['server']['params']} \
-  --syslog -l /var/log/gearmand.log"
+params = [
+  "--port=#{node['gearman']['server']['port']}",
+  "--verbose=#{node['gearman']['server']['verbosity']}",
+  node['gearman']['server']['params'],
+  "--syslog -l /var/log/gearmand.log"
+]
+
+node.default['gearman']['server']['args'] = params.reject(&:empty?).join(" ")
 
 if node['gearman']['server']['source']
   exec = "/usr/local/sbin/gearmand"
