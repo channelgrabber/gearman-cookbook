@@ -47,7 +47,7 @@ template '/etc/init/gearman-job-server.conf' do
       :exec => exec,
       :params => '--config-file /etc/default/gearman-job-server'
   })
-  notifies :restart, "service[gearmand]"
+  notifies :restart, "service[gearmand]", :delayed
 end
 
 template '/etc/default/gearman-job-server' do
@@ -58,7 +58,7 @@ template '/etc/default/gearman-job-server' do
   variables ({
       :params => node['gearman']['server']['args']
   })
-  notifies :restart, "service[gearmand]"
+  notifies :restart, "service[gearmand]", :delayed
 end
 
 service 'gearmand' do
