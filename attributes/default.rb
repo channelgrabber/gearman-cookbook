@@ -33,7 +33,7 @@ default['gearman']['server']['params'] = ''
 
 default['gearman']['repository'] = {
     'uri' => 'http://ppa.launchpad.net/ondrej/pkg-gearman/ubuntu',
-    'deb_src' => truem
+    'deb_src' => true,
     'distribution' => `lsb_release -cs`.strip,
     'components' => ['main'],
     'keyserver' => 'keyserver.ubuntu.com',
