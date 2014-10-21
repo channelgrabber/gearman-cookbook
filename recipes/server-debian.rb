@@ -25,7 +25,7 @@ params = [
   "--syslog -l /var/log/gearmand.log"
 ]
 
-node.default['gearman']['server']['args'] = params.reject(&:empty?).join(" ")
+node.default['gearman']['server']['args'] = params.compact.reject(&:empty?).join(" ")
 
 if node['gearman']['server']['source']
   exec = "/usr/local/sbin/gearmand"
