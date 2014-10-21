@@ -27,6 +27,7 @@ tools_packages = value_for_platform(
     "default" => "mod-gearman-tools"
 )
 
+include_recipe "gearman::repository"
 include_recipe "gearman::#{server_recipe}"
 
 package tools_packages do

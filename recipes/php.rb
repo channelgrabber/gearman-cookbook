@@ -18,6 +18,7 @@
 # limitations under the License.
 #
 
+include_recipe "gearman::repository"
 package "libgearman7"
 package "libgearman-dev"
 
