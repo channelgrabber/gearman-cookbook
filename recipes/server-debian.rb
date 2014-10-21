@@ -23,8 +23,10 @@ node.default['gearman']['server']['args'] = "--port=#{node['gearman']['server'][
   --syslog -l /var/log/gearmand.log"
 
 if node['gearman']['server']['source']
+  exec = "/usr/local/sbin/gearmand"
   include_recipe "gearman::server-source"
 else
+  exec = "/usr/sbin/gearmand"
   [ "gearman-job-server", "libgearman-dev" ].each do |p|
     package p
   end
@@ -36,6 +38,7 @@ template '/etc/init/gearman-job-server.conf' do
   group 'root'
   mode 0755
   variables ({
+      :exec => exec,
       :params => '--config-file /etc/default/gearman-job-server'
   })
   notifies :restart, "service[gearmand]"
