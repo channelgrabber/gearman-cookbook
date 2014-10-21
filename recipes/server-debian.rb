@@ -30,6 +30,17 @@ else
   end
 end
 
+template '/etc/init/gearman-job-server.conf' do
+  source 'gearmand.upstart.erb'
+  owner 'root'
+  group 'root'
+  mode 0755
+  variables ({
+      :params => '--config-file /etc/default/gearman-job-server'
+  })
+  notifies :restart, "service[gearmand]"
+end
+
 template '/etc/default/gearman-job-server' do
   source 'gearmand.init.erb'
   owner 'root'

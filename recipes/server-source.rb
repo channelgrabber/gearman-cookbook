@@ -32,16 +32,6 @@ bash "install_gearman" do
 cmd
 end
 
-template '/etc/init/gearman-job-server.conf' do
-  source 'gearmand.upstart.erb'
-  owner 'root'
-  group 'root'
-  mode 0755
-  variables ({
-      :params => '--config-file /etc/default/gearman-job-server'
-  })
-end
-
 group node['gearman']['server']['group'] do
   action :create
 end
