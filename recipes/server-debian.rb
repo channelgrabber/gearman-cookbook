@@ -59,14 +59,14 @@ template '/etc/init/gearman-job-server.conf' do
   })
 end
 
-file File.join(node['gearman']['server']['data_dir'], 'restart.lock') do
-  action :create_if_missing
-  notifies :restart, "service[gearman]", :delayed
-end
-
 service 'gearman' do
   service_name 'gearman-job-server'
   provider Chef::Provider::Service::Upstart
   supports :restart => true, :status => true
   action [:enable, :start]
+end
+
+file File.join(node['gearman']['server']['data_dir'], 'restart.lock') do
+  action :create_if_missing
+  notifies :restart, "service[gearman]", :delayed
 end
