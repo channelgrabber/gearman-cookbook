@@ -38,7 +38,7 @@ else
   end
 end
 
-config = template '/etc/default/gearman-job-server' do
+template '/etc/default/gearman-job-server' do
   source 'gearmand.init.erb'
   owner 'root'
   group 'root'
@@ -48,7 +48,7 @@ config = template '/etc/default/gearman-job-server' do
   })
 end
 
-upstart = template '/etc/init/gearman-job-server.conf' do
+template '/etc/init/gearman-job-server.conf' do
   source 'gearmand.upstart.erb'
   owner 'root'
   group 'root'
@@ -59,13 +59,8 @@ upstart = template '/etc/init/gearman-job-server.conf' do
   })
 end
 
-actions = [:enable, :start]
-if config.updated_by_last_action? || upstart.updated_by_last_action?
-  actions.push(:restart)
-end
-
 service 'gearman-job-server' do
   provider Chef::Provider::Service::Upstart
   supports :restart => true, :status => true
-  action actions
+  action [:enable, :restart]
 end
