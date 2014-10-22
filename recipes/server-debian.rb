@@ -62,5 +62,6 @@ end
 service 'gearman-job-server' do
   provider Chef::Provider::Service::Upstart
   supports :restart => true, :status => true
-  action [:enable, :restart]
+  action [:enable, :start]
+  notifies :restart, "service[gearman-job-server]", :delayed
 end
