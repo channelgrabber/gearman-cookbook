@@ -63,7 +63,7 @@ end
 
 service 'gearman-job-server' do
   provider Chef::Provider::Service::Upstart
-  supports :restart => true, :status => true
+  supports :restart => false, :reload => false, :status => true
   action :enable
 end
 
