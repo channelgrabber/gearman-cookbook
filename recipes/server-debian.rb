@@ -38,6 +38,17 @@ else
   end
 end
 
+template '/etc/default/gearman-job-server' do
+  source 'gearmand.init.erb'
+  owner 'root'
+  group 'root'
+  mode 0755
+  variables ({
+      :params => node['gearman']['server']['args']
+  })
+  notifies :restart, "service[gearman-job-server]", :delayed
+end
+
 template '/etc/init/gearman-job-server.conf' do
   source 'gearmand.upstart.erb'
   owner 'root'
@@ -46,17 +57,6 @@ template '/etc/init/gearman-job-server.conf' do
   variables ({
       :exec => exec,
       :params => '--config-file /etc/default/gearman-job-server'
-  })
-  notifies :restart, "service[gearman-job-server]", :delayed
-end
-
-template '/etc/default/gearman-job-server' do
-  source 'gearmand.init.erb'
-  owner 'root'
-  group 'root'
-  mode 0755
-  variables ({
-      :params => node['gearman']['server']['args']
   })
   notifies :restart, "service[gearman-job-server]", :delayed
 end
