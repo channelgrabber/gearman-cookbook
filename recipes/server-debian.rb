@@ -34,8 +34,9 @@ else
   exec = "/usr/sbin/gearmand"
   include_recipe "gearman::repository"
   [ "gearman-job-server", "libgearman-dev" ].each do |p|
-    package p
-    notifies :restart, "service[gearman-job-server]", :delayed
+    package p do
+        notifies :restart, "service[gearman-job-server]", :delayed
+    end
   end
 end
 
