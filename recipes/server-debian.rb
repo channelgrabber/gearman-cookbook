@@ -62,8 +62,8 @@ template '/etc/init/gearman-job-server.conf' do
 end
 
 service 'gearman-job-server' do
-  provider Chef::Provider::Service::Upstart
-  supports :restart => false, :reload => false, :status => true
+  provider Chef::Provider::Service::Init::Redhat
+  supports :restart => true, :reload => false, :status => true
   action :enable
 end
 
