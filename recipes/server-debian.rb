@@ -40,6 +40,12 @@ else
   end
 end
 
+file '/var/log/gearmand.log' do
+  owner node['gearman']['server']['user']
+  group node['gearman']['server']['group']
+  action :create_if_missing
+end
+
 template '/etc/default/gearman-job-server' do
   source 'gearmand.init.erb'
   owner 'root'
