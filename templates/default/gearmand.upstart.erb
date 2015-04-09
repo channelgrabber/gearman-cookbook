@@ -5,6 +5,11 @@ description "Gearman job server"
 start on (net-device-up and local-filesystems and runlevel [2345])
 stop on runlevel [016]
 
+<% if node['gearman']['server'].has_key?('limits') -%>
+<% node['gearman']['server']['limits'].each do |limit| -%>
+limit <%= limit %>
+<% end -%>
+<% end -%>
 exec start-stop-daemon --pidfile /var/run/gearmand.pid --start -c <%= node['gearman']['server']['user'] %> --exec <%= @exec %> -- <%= @params %>
 
 respawn
