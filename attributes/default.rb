@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+default['gearman']['server']['enabled'] = true
 default['gearman']['server']['source'] = true
 default['gearman']['server']['release'] = '1.2'
 default['gearman']['server']['version'] = '1.1.8'

@@ -72,5 +72,9 @@ supervisor_service 'gearmand' do
   start_command "/usr/sbin/gearmand #{args}"
   variables :user => node['gearman']['server']['user']
   supports :restart => true
-  action [:enable, :start]
+  if node['gearman']['server']['enabled']
+    action [:enable, :start]
+  else
+    action [:stop, :disable]
+  end
 end

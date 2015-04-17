@@ -35,7 +35,7 @@ else
   include_recipe "gearman::repository"
   [ "gearman-job-server", "libgearman-dev" ].each do |p|
     package p do
-        notifies :restart, "service[gearman-job-server]", :delayed
+        notifies :restart, "service[gearman-job-server]", :delayed if node['gearman']['server']['enabled']
     end
   end
 end
@@ -74,10 +74,14 @@ service 'gearman-job-server' do
   restart_command '/usr/sbin/service gearman-job-server restart'
   stop_command '/usr/sbin/service gearman-job-server stop'
   status_command '/usr/sbin/service gearman-job-server status'
-  action :enable
+  if node['gearman']['server']['enabled']
+    action [:enable, :start]
+  else
+    action [:stop, :disable]
+  end
 end
 
 file File.join(node['gearman']['server']['data_dir'], 'restart.lock') do
   action :create_if_missing
-  notifies :restart, "service[gearman-job-server]", :delayed
+  notifies :restart, "service[gearman-job-server]", :delayed if node['gearman']['server']['enabled']
 end
