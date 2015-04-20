@@ -73,6 +73,7 @@ link '/etc/init.d/gearman-job-server' do
 end
 
 service 'gearman-job-server' do
+  provider Chef::Provider::Service::Upstart
   if node['gearman']['server']['enabled']
     action [:enable, :start]
   else
