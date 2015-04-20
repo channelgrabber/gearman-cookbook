@@ -2,7 +2,7 @@
 
 description "Gearman job server"
 
-start on (net-device-up and local-filesystems and runlevel [2345])
+<%= '#' unless node['gearman']['server']['enabled'] %>start on (net-device-up and local-filesystems and runlevel [2345])
 stop on runlevel [016]
 
 <% if node['gearman']['server'].has_key?('limits') -%>
