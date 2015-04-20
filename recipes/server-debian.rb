@@ -60,15 +60,16 @@ template '/etc/init/gearman-job-server.conf' do
   source 'gearmand.upstart.erb'
   owner 'root'
   group 'root'
-  mode 0755
+  mode 0644
   variables ({
       :exec => exec,
       :params => '--config-file /etc/default/gearman-job-server'
   })
 end
 
-file '/etc/init.d/gearman-job-server' do
-  action :delete
+link '/etc/init.d/gearman-job-server' do
+  to '/lib/init/upstart-job'
+  link_type :symbolic
 end
 
 service 'gearman-job-server' do
