@@ -49,9 +49,9 @@ def get_rhel_service(name, params)
 end
 
 def get_debian_service(name, params)
-  config = File.join('/etc/default', name)
-  upstart = File.join('/etc/init', "#{name}.conf")
-  init = File.join('/etc/init.d', name)
+  config = ::File.join('/etc/default', name)
+  upstart = ::File.join('/etc/init', "#{name}.conf")
+  init = ::File.join('/etc/init.d', name)
 
   if node['gearman']['server']['source']
     exec = '/usr/local/sbin/gearmand'
@@ -86,7 +86,7 @@ def get_debian_service(name, params)
   end
 
   service name do
-    provider Chef::Provider::Service::Upstart
+    provider ::Chef::Provider::Service::Upstart
     action :nothing
   end
 end
