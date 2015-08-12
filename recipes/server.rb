@@ -39,6 +39,10 @@ params = [
 
 node.default['gearman']['server']['args'] = params.compact.reject(&:empty?).join(" ")
 
+directory node['gearman']['server']['log_dir'] do
+  recursive true
+end
+
 file "#{node['gearman']['server']['log_dir']}/gearmand.log" do
   owner node['gearman']['server']['user']
   group node['gearman']['server']['group']
