@@ -65,7 +65,7 @@ def get_debian_service(name, params)
     group 'root'
     mode 0755
     variables ({
-        :params => params
+      :params => params
     })
     notifies :restart, "service[#{name}]", :delayed
   end
@@ -76,8 +76,8 @@ def get_debian_service(name, params)
     group 'root'
     mode 0644
     variables ({
-        :exec => exec,
-        :params => "--config-file #{config}"
+      :exec => exec,
+      :params => "--config-file #{config}"
     })
   end
 
