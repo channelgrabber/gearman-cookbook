@@ -54,6 +54,11 @@ gearman_instance 'gearman-job-server' do
   end
 end
 
+file File.join(node['gearman']['server']['data_dir'], 'restart.lock') do
+  action :create_if_missing
+  notifies :restart, "gearman_instance[gearman-job-server]", :delayed if node['gearman']['server']['enabled']
+end
+
 package tools_packages do
   action :install
   only_if node['gearman']['server']['user'].equal?(1)

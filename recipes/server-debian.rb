@@ -24,7 +24,7 @@ else
   include_recipe "gearman::repository"
   [ "gearman-job-server", "libgearman-dev" ].each do |p|
     package p do
-        notifies :restart, "service[gearman-job-server]", :delayed if node['gearman']['server']['enabled']
+        notifies :restart, "gearman_instance[gearman-job-server]", :delayed if node['gearman']['server']['enabled']
     end
   end
 end
