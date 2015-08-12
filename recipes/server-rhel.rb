@@ -66,15 +66,3 @@ directory node['gearman']['server']['log_dir'] do
   group node['gearman']['server']['group']
   mode '0775'
 end
-
-include_recipe 'supervisor'
-supervisor_service 'gearmand' do
-  start_command "/usr/sbin/gearmand #{args}"
-  variables :user => node['gearman']['server']['user']
-  supports :restart => true
-  if node['gearman']['server']['enabled']
-    action [:enable, :start]
-  else
-    action [:stop, :disable]
-  end
-end

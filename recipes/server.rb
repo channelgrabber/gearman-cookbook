@@ -30,6 +30,30 @@ tools_packages = value_for_platform(
 include_recipe "gearman::repository"
 include_recipe "gearman::#{server_recipe}"
 
+params = [
+  "--port=#{node['gearman']['server']['port']}",
+  "--verbose=#{node['gearman']['server']['verbosity']}",
+  node['gearman']['server']['params'],
+  "--syslog -l #{node['gearman']['server']['log_dir']}/gearmand.log"
+]
+
+node.default['gearman']['server']['args'] = params.compact.reject(&:empty?).join(" ")
+
+file "#{node['gearman']['server']['log_dir']}/gearmand.log" do
+  owner node['gearman']['server']['user']
+  group node['gearman']['server']['group']
+  action :create_if_missing
+end
+
+gearman_instance 'gearman-job-server' do
+  params node['gearman']['server']['args']
+  if node['gearman']['server']['enabled']
+    action [:enable, :start]
+  else
+    action [:stop, :disable]
+  end
+end
+
 package tools_packages do
   action :install
   only_if node['gearman']['server']['user'].equal?(1)

@@ -18,70 +18,13 @@
 # limitations under the License.
 #
 
-params = [
-  "--port=#{node['gearman']['server']['port']}",
-  "--verbose=#{node['gearman']['server']['verbosity']}",
-  node['gearman']['server']['params'],
-  "--syslog -l /var/log/gearmand.log"
-]
-
-node.default['gearman']['server']['args'] = params.compact.reject(&:empty?).join(" ")
-
 if node['gearman']['server']['source']
-  exec = "/usr/local/sbin/gearmand"
   include_recipe "gearman::server-source"
 else
-  exec = "/usr/sbin/gearmand"
   include_recipe "gearman::repository"
   [ "gearman-job-server", "libgearman-dev" ].each do |p|
     package p do
         notifies :restart, "service[gearman-job-server]", :delayed if node['gearman']['server']['enabled']
     end
   end
-end
-
-file '/var/log/gearmand.log' do
-  owner node['gearman']['server']['user']
-  group node['gearman']['server']['group']
-  action :create_if_missing
-end
-
-template '/etc/default/gearman-job-server' do
-  source 'gearmand.init.erb'
-  owner 'root'
-  group 'root'
-  mode 0755
-  variables ({
-      :params => node['gearman']['server']['args']
-  })
-end
-
-template '/etc/init/gearman-job-server.conf' do
-  source 'gearmand.upstart.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
-  variables ({
-      :exec => exec,
-      :params => '--config-file /etc/default/gearman-job-server'
-  })
-end
-
-link '/etc/init.d/gearman-job-server' do
-  to '/lib/init/upstart-job'
-  link_type :symbolic
-end
-
-service 'gearman-job-server' do
-  provider Chef::Provider::Service::Upstart
-  if node['gearman']['server']['enabled']
-    action [:enable, :start]
-  else
-    action [:stop, :disable]
-  end
-end
-
-file File.join(node['gearman']['server']['data_dir'], 'restart.lock') do
-  action :create_if_missing
-  notifies :restart, "service[gearman-job-server]", :delayed if node['gearman']['server']['enabled']
 end
