@@ -12,6 +12,10 @@ action :start do
   service_action(new_resource.name, new_resource.params, :start)
 end
 
+action :restart do
+  service_action(new_resource.name, new_resource.params, :restart)
+end
+
 action :stop do
   service_action(new_resource.name, new_resource.params, :stop)
 end
