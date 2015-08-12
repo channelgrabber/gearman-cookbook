@@ -67,8 +67,9 @@ def get_debian_service(name, params)
     variables ({
       :params => params
     })
+    action :nothing
     notifies :restart, "service[#{name}]", :delayed
-  end
+  end.run_action(:create)
 
   template upstart do
     source 'gearmand.upstart.erb'
@@ -79,12 +80,14 @@ def get_debian_service(name, params)
       :exec => exec,
       :params => "--config-file #{config}"
     })
-  end
+    action :nothing
+  end.run_action(:create)
 
   link init do
     to '/lib/init/upstart-job'
     link_type :symbolic
-  end
+    action :nothing
+  end.run_action(:create)
 
   service name do
     provider ::Chef::Provider::Service::Upstart
