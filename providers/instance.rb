@@ -6,22 +6,27 @@ use_inline_resources
 
 action :enable do
   service_action(new_resource.name, new_resource.params, :enable)
+  ::Chef::Log.info "#{@new_resource} enabled"
 end
 
 action :start do
   service_action(new_resource.name, new_resource.params, :start)
+  ::Chef::Log.info "#{@new_resource} started"
 end
 
 action :restart do
   service_action(new_resource.name, new_resource.params, :restart)
+  ::Chef::Log.info "#{@new_resource} restarted"
 end
 
 action :stop do
   service_action(new_resource.name, new_resource.params, :stop)
+  ::Chef::Log.info "#{@new_resource} stopped"
 end
 
 action :disable do
   service_action(new_resource.name, new_resource.params, :disable)
+  ::Chef::Log.info "#{@new_resource} disabled"
 end
 
 def service_action(name, params, action)
