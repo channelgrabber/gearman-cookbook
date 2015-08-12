@@ -67,6 +67,7 @@ def get_debian_service(name, params)
     variables ({
         :params => params
     })
+    notifies :restart, "service[#{name}]", :delayed
   end
 
   template upstart do
