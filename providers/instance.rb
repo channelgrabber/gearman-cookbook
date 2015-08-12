@@ -20,13 +20,13 @@ action :disable do
   service_action(new_resource.name, new_resource.params, :disable)
 end
 
-def service_action(name, params, action) do
+def service_action(name, params, action)
   service = get_service(name, params)
   service.run_action(action)
   service.updated_by_last_action?
 end
 
-def get_service(name, params) do
+def get_service(name, params)
   if ['centos', 'redhat', 'fedora'].include?(node['platform'])
     get_rhel_service(name, params)
   else
@@ -34,7 +34,7 @@ def get_service(name, params) do
   end
 end
 
-def get_rhel_service(name, params) do
+def get_rhel_service(name, params)
   include_recipe 'supervisor'
   supervisor_service name do
     start_command "/usr/sbin/gearmand #{params}"
@@ -44,7 +44,7 @@ def get_rhel_service(name, params) do
   end
 end
 
-def get_debian_service(name, params) do
+def get_debian_service(name, params)
   config = File.join('/etc/default', name)
   upstart = File.join('/etc/init', "#{name}.conf")
   init = File.join('/etc/init.d', name)
