@@ -17,31 +17,34 @@
 # limitations under the License.
 #
 
-default['gearman']['server']['enabled'] = true
 default['gearman']['server']['source'] = true
 default['gearman']['server']['release'] = '1.2'
 default['gearman']['server']['version'] = '1.1.8'
-default['gearman']['server']['verbosity'] = 'ERROR'
 default['gearman']['server']['tmp'] = '/tmp'
 default['gearman']['server']['user'] = 'gearman'
 default['gearman']['server']['group'] = 'gearman'
-default['gearman']['server']['port'] = 4730
 default['gearman']['server']['tools'] = 1
 default['gearman']['server']['log_dir'] = value_for_platform(
   [ 'centos', 'redhat', 'fedora' ] => {'default' => '/var/log/gearmand'},
   'default' => '/var/log/gearman-job-server'
 )
-default['gearman']['server']['log_level'] = 'INFO'
 default['gearman']['server']['data_dir'] = '/var/lib/gearman'
-default['gearman']['server']['params'] = ''
+default['gearman']['server']['instances'] = {
+  'gearman-job-server' => {
+    'enabled' => true,
+    'verbosity' => 'ERROR',
+    'port' => 4730,
+    'params' => ''
+  }
+}
 
 default['gearman']['repository'] = {
-    'uri' => 'http://ppa.launchpad.net/ondrej/pkg-gearman/ubuntu',
-    'deb_src' => true,
-    'distribution' => `lsb_release -cs`.strip,
-    'components' => ['main'],
-    'keyserver' => 'keyserver.ubuntu.com',
-    'key' => 'E5267A6C'
+  'uri' => 'http://ppa.launchpad.net/ondrej/pkg-gearman/ubuntu',
+  'deb_src' => true,
+  'distribution' => `lsb_release -cs`.strip,
+  'components' => ['main'],
+  'keyserver' => 'keyserver.ubuntu.com',
+  'key' => 'E5267A6C'
 }
 
 default['gearman']['php']['version'] = '1.1.2'

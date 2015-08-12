@@ -30,37 +30,38 @@ tools_packages = value_for_platform(
 include_recipe "gearman::repository"
 include_recipe "gearman::#{server_recipe}"
 
-params = [
-  "--port=#{node['gearman']['server']['port']}",
-  "--verbose=#{node['gearman']['server']['verbosity']}",
-  node['gearman']['server']['params'],
-  "--syslog -l #{node['gearman']['server']['log_dir']}/gearmand.log"
-]
-
-node.default['gearman']['server']['args'] = params.compact.reject(&:empty?).join(" ")
-
 directory node['gearman']['server']['log_dir'] do
   recursive true
 end
 
-file "#{node['gearman']['server']['log_dir']}/gearmand.log" do
-  owner node['gearman']['server']['user']
-  group node['gearman']['server']['group']
-  action :create_if_missing
-end
+node['gearman']['server']['instances'].each do |name, config|
+  params = []
+  params << "--port=#{config['port']}" if config.has_key?('port')
+  params << "--verbose=#{config['verbosity']}" if config.has_key?('verbosity')
+  params << config['params'] if config.has_key?('params')
+  params << "--syslog -l #{node['gearman']['server']['log_dir']}/#{name}.log"
 
-gearman_instance 'gearman-job-server' do
-  params node['gearman']['server']['args']
-  if node['gearman']['server']['enabled']
-    action [:enable, :start]
-  else
-    action [:stop, :disable]
+  file "#{node['gearman']['server']['log_dir']}/#{name}.log" do
+    owner node['gearman']['server']['user']
+    group node['gearman']['server']['group']
+    action :create_if_missing
+  end
+
+  gearman_instance name do
+    params params.compact.reject(&:empty?).join(" ")
+    if config.has_key?('enabled') && config['enabled']
+      action [:enable, :start]
+    else
+      action [:stop, :disable]
+    end
   end
 end
 
 file File.join(node['gearman']['server']['data_dir'], 'restart.lock') do
   action :create_if_missing
-  notifies :restart, "gearman_instance[gearman-job-server]", :delayed if node['gearman']['server']['enabled']
+  node['gearman']['server']['instances'].each do |name, config|
+    notifies :restart, "gearman_instance[#{name}]", :delayed if config.has_key?('enabled') && config['enabled']
+  end
 end
 
 package tools_packages do
