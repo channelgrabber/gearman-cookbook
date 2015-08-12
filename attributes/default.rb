@@ -27,7 +27,10 @@ default['gearman']['server']['user'] = 'gearman'
 default['gearman']['server']['group'] = 'gearman'
 default['gearman']['server']['port'] = 4730
 default['gearman']['server']['tools'] = 1
-default['gearman']['server']['log_dir'] = '/var/log/gearmand'
+default['gearman']['server']['log_dir'] = value_for_platform(
+  [ 'centos', 'redhat', 'fedora' ] => {'default' => '/var/log/gearmand'},
+  'default' => '/var/log/gearman-job-server'
+)
 default['gearman']['server']['log_level'] = 'INFO'
 default['gearman']['server']['data_dir'] = '/var/lib/gearman'
 default['gearman']['server']['params'] = ''
