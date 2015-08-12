@@ -68,7 +68,6 @@ def get_debian_service(name, params)
       :params => params
     })
     action :nothing
-    notifies :restart, "service[#{name}]", :delayed
   end.run_action(:create)
 
   template upstart do
