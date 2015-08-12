@@ -32,7 +32,7 @@ default['gearman']['server']['data_dir'] = '/var/lib/gearman'
 default['gearman']['server']['instances'] = {
   'gearman-job-server' => {
     'enabled' => true,
-    'verbosity' => 'ERROR',
+    'verbosity' => 'INFO',
     'port' => 4730,
     'params' => ''
   }
