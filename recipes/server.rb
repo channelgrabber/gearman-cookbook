@@ -40,6 +40,7 @@ node['gearman']['server']['instances'].each do |name, config|
   params << "--verbose=#{config['verbosity']}" if config.has_key?('verbosity')
   params << config['params'] if config.has_key?('params')
   params << "--syslog -l #{node['gearman']['server']['log_dir']}/#{name}.log"
+  params = params.compact.reject(&:empty?).join(' ')
 
   file "#{node['gearman']['server']['log_dir']}/#{name}.log" do
     owner node['gearman']['server']['user']
@@ -48,7 +49,7 @@ node['gearman']['server']['instances'].each do |name, config|
   end
 
   gearman_instance name do
-    params params.compact.reject(&:empty?).join(" ")
+    params params
     if config.has_key?('enabled') && config['enabled']
       action [:enable, :start]
     else
