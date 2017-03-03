@@ -40,7 +40,7 @@ node['gearman']['server']['instances'].each do |name, config|
   params['verbose'] = config['verbosity'] if config.has_key?('verbosity')
   params['syslog'] = true
   params['log-file'] = "#{node['gearman']['server']['log_dir']}/#{name}.log"
-  params.merge(config['params'].to_hash) if config.has_key?('params')
+  params.merge!(config['params'].to_hash) if config.has_key?('params')
 
   file "#{node['gearman']['server']['log_dir']}/#{name}.log" do
     owner node['gearman']['server']['user']
