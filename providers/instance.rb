@@ -34,7 +34,7 @@ def parse_parameters(parameters)
   parameters.collect do |param, value|
     if value == false
       ''
-    elsif value == true || value.empty?
+    elsif value == true || (value.is_a?(String) && value.empty?)
       "#{'-' * [param.length, 2].min}#{param}"
     else
       "#{'-' * [param.length, 2].min}#{param} #{value}"
