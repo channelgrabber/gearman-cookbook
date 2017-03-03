@@ -29,13 +29,12 @@ default['gearman']['server']['log_dir'] = value_for_platform(
   'default' => '/var/log/gearman-job-server'
 )
 default['gearman']['server']['data_dir'] = '/var/lib/gearman'
-default['gearman']['server']['instances'] = {
-  'gearman-job-server' => {
-    'enabled' => true,
-    'port' => 4730,
-    'verbosity' => 'INFO',
-    'params' => {}
-  }
+default['gearman']['server']['instances'] = {}
+default['gearman']['server']['defaults'] = {
+  'enabled' => true,
+  'port' => 4730,
+  'verbosity' => 'INFO',
+  'params' => {}
 }
 
 default['gearman']['repository'] = {

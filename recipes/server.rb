@@ -34,13 +34,17 @@ directory node['gearman']['server']['log_dir'] do
   recursive true
 end
 
-node['gearman']['server']['instances'].each do |name, config|
-  params = {}
-  params['port'] = config['port'] if config.has_key?('port')
-  params['verbose'] = config['verbosity'] if config.has_key?('verbosity')
-  params['syslog'] = true
-  params['log-file'] = "#{node['gearman']['server']['log_dir']}/#{name}.log"
-  params.merge!(config['params'].to_hash) if config.has_key?('params')
+instances = node['gearman']['server']['instances'].to_hash
+if instances.empty?
+  instances['gearman-job-server'] = node['gearman']['server']['defaults'].to_hash
+end
+
+instances.each do |name, config|
+  config = Chef::Mixin::DeepMerge.deep_merge!(config, node['gearman']['server']['defaults'].to_hash)
+  config['params']['port'] = config['port'] if config.has_key?('port')
+  config['params']['verbose'] = config['verbosity'] if config.has_key?('verbosity')
+  config['params']['syslog'] = true
+  config['params']['log-file'] = "#{node['gearman']['server']['log_dir']}/#{name}.log"
 
   file "#{node['gearman']['server']['log_dir']}/#{name}.log" do
     owner node['gearman']['server']['user']
@@ -49,7 +53,7 @@ node['gearman']['server']['instances'].each do |name, config|
   end
 
   gearman_instance name do
-    parameters params
+    parameters config['params']
     if config.has_key?('enabled') && config['enabled']
       action [:enable, :start]
     else
