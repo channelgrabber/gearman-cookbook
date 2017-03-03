@@ -39,7 +39,7 @@ node['gearman']['server']['instances'].each do |name, config|
   params['port'] = config['port'] if config.has_key?('port')
   params['verbose'] = config['verbosity'] if config.has_key?('verbosity')
   params['syslog'] = true
-  params['l'] = "#{node['gearman']['server']['log_dir']}/#{name}.log"
+  params['log-file'] = "#{node['gearman']['server']['log_dir']}/#{name}.log"
   params.merge(config['params'].to_hash) if config.has_key?('params')
 
   file "#{node['gearman']['server']['log_dir']}/#{name}.log" do
