@@ -5,23 +5,23 @@ end
 use_inline_resources
 
 action :enable do
-  service_action(new_resource.name, new_resource.params, :enable)
+  service_action(new_resource.name, new_resource.parameters, :enable)
 end
 
 action :start do
-  service_action(new_resource.name, new_resource.params, :start)
+  service_action(new_resource.name, new_resource.parameters, :start)
 end
 
 action :restart do
-  service_action(new_resource.name, new_resource.params, :restart)
+  service_action(new_resource.name, new_resource.parameters, :restart)
 end
 
 action :stop do
-  service_action(new_resource.name, new_resource.params, :stop)
+  service_action(new_resource.name, new_resource.parameters, :stop)
 end
 
 action :disable do
-  service_action(new_resource.name, new_resource.params, :disable)
+  service_action(new_resource.name, new_resource.parameters, :disable)
 end
 
 def service_action(name, params, action)

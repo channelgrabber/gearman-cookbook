@@ -49,7 +49,7 @@ node['gearman']['server']['instances'].each do |name, config|
   end
 
   gearman_instance name do
-    params params
+    parameters params
     if config.has_key?('enabled') && config['enabled']
       action [:enable, :start]
     else
