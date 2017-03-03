@@ -35,12 +35,12 @@ directory node['gearman']['server']['log_dir'] do
 end
 
 node['gearman']['server']['instances'].each do |name, config|
-  params = []
-  params << "--port=#{config['port']}" if config.has_key?('port')
-  params << "--verbose=#{config['verbosity']}" if config.has_key?('verbosity')
-  params << config['params'] if config.has_key?('params')
-  params << "--syslog -l #{node['gearman']['server']['log_dir']}/#{name}.log"
-  params = params.compact.reject(&:empty?).join(' ')
+  params = {}
+  params['port'] = config['port'] if config.has_key?('port')
+  params['verbose'] = config['verbosity'] if config.has_key?('verbosity')
+  params['syslog'] = true
+  params['l'] = "#{node['gearman']['server']['log_dir']}/#{name}.log"
+  params.merge(config['params'].to_hash) if config.has_key?('params')
 
   file "#{node['gearman']['server']['log_dir']}/#{name}.log" do
     owner node['gearman']['server']['user']

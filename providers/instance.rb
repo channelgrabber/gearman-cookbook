@@ -24,10 +24,22 @@ action :disable do
   service_action(new_resource.name, new_resource.parameters, :disable)
 end
 
-def service_action(name, params, action)
-  service = get_service(name, params)
+def service_action(name, parameters, action)
+  service = get_service(name, parse_parameters(parameters).reject(&:empty?).join(' '))
   service.run_action(action)
   service.updated_by_last_action?
+end
+
+def parse_parameters(parameters)
+  parameters.collect do |param, value|
+    if value == false
+      ''
+    elsif value == true || value.empty?
+      "#{'-' * [param.length, 2].min}#{param}"
+    else
+      "#{'-' * [param.length, 2].min}#{param} #{value}"
+    end
+  end
 end
 
 def get_service(name, params)

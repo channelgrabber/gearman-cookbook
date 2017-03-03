@@ -34,7 +34,7 @@ default['gearman']['server']['instances'] = {
     'enabled' => true,
     'port' => 4730,
     'verbosity' => 'INFO',
-    'params' => ''
+    'params' => {}
   }
 }
 
