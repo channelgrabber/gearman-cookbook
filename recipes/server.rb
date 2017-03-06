@@ -31,6 +31,9 @@ include_recipe "gearman::repository"
 include_recipe "gearman::#{server_recipe}"
 
 directory node['gearman']['server']['log_dir'] do
+  owner node['gearman']['server']['user']
+  group node['gearman']['server']['group']
+  mode '0755'
   recursive true
 end
 
@@ -49,6 +52,7 @@ instances.each do |name, config|
   file "#{node['gearman']['server']['log_dir']}/#{name}.log" do
     owner node['gearman']['server']['user']
     group node['gearman']['server']['group']
+    mode '0644'
     action :create_if_missing
   end
 
@@ -64,7 +68,7 @@ end
 
 file File.join(node['gearman']['server']['data_dir'], 'restart.lock') do
   action :create_if_missing
-  node['gearman']['server']['instances'].each do |name, config|
+  instances.each do |name, config|
     notifies :restart, "gearman_instance[#{name}]", :delayed if config.has_key?('enabled') && config['enabled']
   end
 end
